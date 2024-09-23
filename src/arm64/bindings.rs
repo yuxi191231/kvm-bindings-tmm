@@ -272,6 +272,7 @@ pub const KVM_ARM_VCPU_SVE: u32 = 4;
 pub const KVM_ARM_VCPU_PTRAUTH_ADDRESS: u32 = 5;
 pub const KVM_ARM_VCPU_PTRAUTH_GENERIC: u32 = 6;
 pub const KVM_ARM_VCPU_HAS_EL2: u32 = 7;
+pub const KVM_ARM_VCPU_REC: u32 = 8;
 pub const KVM_ARM_MAX_DBG_REGS: u32 = 16;
 pub const KVM_DEBUG_ARCH_HSR_HIGH_VALID: u32 = 1;
 pub const KVM_GUESTDBG_USE_SW_BP: u32 = 65536;
@@ -353,6 +354,20 @@ pub const KVM_DEV_ARM_ITS_SAVE_TABLES: u32 = 1;
 pub const KVM_DEV_ARM_ITS_RESTORE_TABLES: u32 = 2;
 pub const KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES: u32 = 3;
 pub const KVM_DEV_ARM_ITS_CTRL_RESET: u32 = 4;
+pub const KVM_CAP_ARM_TMM_CONFIG_CVM: u32 = 0;
+pub const KVM_CAP_ARM_TMM_CREATE_RD: u32 = 1;
+//pub const KVM_CAP_ARM_RME_INIT_IPA_REALM: u32 = 2;
+pub const KVM_CAP_ARM_TMM_POPULATE_CVM: u32 = 2;
+pub const KVM_CAP_ARM_TMM_ACTIVATE_CVM: u32 = 3;
+pub const KVM_CAP_ARM_TMM_MEASUREMENT_ALGO_SHA256: u32 = 0;
+pub const KVM_CAP_ARM_TMM_MEASUREMENT_ALGO_SHA512: u32 = 1;
+pub const KVM_CAP_ARM_TMM_RPV_SIZE: u32 = 64;
+pub const KVM_CAP_ARM_TMM_CFG_RPV: u32 = 0;
+pub const KVM_CAP_ARM_TMM_CFG_HASH_ALGO: u32 = 1;
+//pub const KVM_ARM_RME_POPULATE_FLAGS_MEASURE: u32 = 1;
+pub const KVM_CAP_ARM_TMM_CFG_SVE: u32 = 2;
+pub const KVM_CAP_ARM_TMM_CFG_DBG: u32 = 3;
+pub const KVM_CAP_ARM_TMM_CFG_PMU: u32 = 4;
 pub const KVM_ARM_VCPU_PMU_V3_CTRL: u32 = 0;
 pub const KVM_ARM_VCPU_PMU_V3_IRQ: u32 = 0;
 pub const KVM_ARM_VCPU_PMU_V3_INIT: u32 = 1;
@@ -488,6 +503,8 @@ pub const KVM_VM_MIPS_AUTO: u32 = 0;
 pub const KVM_VM_MIPS_VZ: u32 = 1;
 pub const KVM_VM_MIPS_TE: u32 = 2;
 pub const KVM_S390_SIE_PAGE_OFFSET: u32 = 1;
+pub const KVM_VM_TYPE_ARM_SHIFT: u32 = 8;
+pub const KVM_VM_TYPE_ARM_MASK: u32 = 3840;
 pub const KVM_VM_TYPE_ARM_IPA_SIZE_MASK: u32 = 255;
 pub const KVM_CAP_IRQCHIP: u32 = 0;
 pub const KVM_CAP_HLT: u32 = 1;
@@ -711,6 +728,7 @@ pub const KVM_CAP_MEMORY_FAULT_INFO: u32 = 232;
 pub const KVM_CAP_MEMORY_ATTRIBUTES: u32 = 233;
 pub const KVM_CAP_GUEST_MEMFD: u32 = 234;
 pub const KVM_CAP_VM_TYPES: u32 = 235;
+pub const KVM_CAP_ARM_TMM: u32 = 300;
 pub const KVM_IRQ_ROUTING_IRQCHIP: u32 = 1;
 pub const KVM_IRQ_ROUTING_MSI: u32 = 2;
 pub const KVM_IRQ_ROUTING_S390_ADAPTER: u32 = 3;
@@ -2063,6 +2081,316 @@ pub type _bindgen_ty_2 = ::std::os::raw::c_uint;
 pub const KVM_REG_ARM_VENDOR_HYP_BIT_FUNC_FEAT: _bindgen_ty_3 = 0;
 pub const KVM_REG_ARM_VENDOR_HYP_BIT_PTP: _bindgen_ty_3 = 1;
 pub type _bindgen_ty_3 = ::std::os::raw::c_uint;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct kvm_cap_arm_tmm_config_item {
+    pub cfg: __u32,
+    pub __bindgen_anon_1: kvm_cap_arm_tmm_config_item__bindgen_ty_1,
+}
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub union kvm_cap_arm_tmm_config_item__bindgen_ty_1 {
+    pub __bindgen_anon_1: kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1,
+    pub __bindgen_anon_2: kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2,
+    pub reserved: [__u8; 256usize],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1 {
+    pub rpv: [__u8; 64usize],
+}
+#[test]
+fn bindgen_test_layout_kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1() {
+    const UNINIT: ::std::mem::MaybeUninit<kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1>(),
+        64usize,
+        concat!(
+            "Size of: ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1>(),
+        1usize,
+        concat!(
+            "Alignment of ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).rpv) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1),
+            "::",
+            stringify!(rpv)
+        )
+    );
+}
+impl Default for kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_1 {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, PartialEq)]
+pub struct kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2 {
+    pub hash_algo: __u32,
+}
+#[test]
+fn bindgen_test_layout_kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2() {
+    const UNINIT: ::std::mem::MaybeUninit<kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2>(),
+        4usize,
+        concat!(
+            "Size of: ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).hash_algo) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1__bindgen_ty_2),
+            "::",
+            stringify!(hash_algo)
+        )
+    );
+}
+#[test]
+fn bindgen_test_layout_kvm_cap_arm_tmm_config_item__bindgen_ty_1() {
+    const UNINIT: ::std::mem::MaybeUninit<kvm_cap_arm_tmm_config_item__bindgen_ty_1> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<kvm_cap_arm_tmm_config_item__bindgen_ty_1>(),
+        256usize,
+        concat!(
+            "Size of: ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<kvm_cap_arm_tmm_config_item__bindgen_ty_1>(),
+        4usize,
+        concat!(
+            "Alignment of ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_config_item__bindgen_ty_1),
+            "::",
+            stringify!(reserved)
+        )
+    );
+}
+impl Default for kvm_cap_arm_tmm_config_item__bindgen_ty_1 {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+impl ::std::fmt::Debug for kvm_cap_arm_tmm_config_item__bindgen_ty_1 {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        write!(f, "kvm_cap_arm_tmm_config_item__bindgen_ty_1 {{ union }}")
+    }
+}
+#[test]
+fn bindgen_test_layout_kvm_cap_arm_tmm_config_item() {
+    const UNINIT: ::std::mem::MaybeUninit<kvm_cap_arm_tmm_config_item> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<kvm_cap_arm_tmm_config_item>(),
+        260usize,
+        concat!("Size of: ", stringify!(kvm_cap_arm_tmm_config_item))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<kvm_cap_arm_tmm_config_item>(),
+        4usize,
+        concat!("Alignment of ", stringify!(kvm_cap_arm_tmm_config_item))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).cfg) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_config_item),
+            "::",
+            stringify!(cfg)
+        )
+    );
+}
+impl Default for kvm_cap_arm_tmm_config_item {
+    fn default() -> Self {
+        let mut s = ::std::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::std::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+impl ::std::fmt::Debug for kvm_cap_arm_tmm_config_item {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        write!(
+            f,
+            "kvm_cap_arm_tmm_config_item {{ cfg: {:?}, __bindgen_anon_1: {:?} }}",
+            self.cfg, self.__bindgen_anon_1
+        )
+    }
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, PartialEq)]
+pub struct kvm_cap_arm_tmm_populate_realm_args {
+    pub populate_ipa_base: __u64,
+    pub populate_ipa_size: __u64,
+    // pub populate_ipa_base1: __u64,
+    // pub populate_ipa_size1: __u64,
+    // pub populate_ipa_base2: __u64,
+    // pub populate_ipa_size2: __u64,
+    pub flags: __u32,
+    pub reserved: [__u32; 3usize],
+}
+#[test]
+fn bindgen_test_layout_kvm_cap_arm_tmm_populate_realm_args() {
+    const UNINIT: ::std::mem::MaybeUninit<kvm_cap_arm_tmm_populate_realm_args> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<kvm_cap_arm_tmm_populate_realm_args>(),
+        32usize,
+        concat!("Size of: ", stringify!(kvm_cap_arm_tmm_populate_realm_args))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<kvm_cap_arm_tmm_populate_realm_args>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(kvm_cap_arm_tmm_populate_realm_args)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).populate_ipa_base) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_populate_realm_args),
+            "::",
+            stringify!(populate_ipa_base)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).populate_ipa_size) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_populate_realm_args),
+            "::",
+            stringify!(populate_ipa_size)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).flags) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_populate_realm_args),
+            "::",
+            stringify!(flags)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_populate_realm_args),
+            "::",
+            stringify!(reserved)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Default, Copy, Clone, PartialEq)]
+pub struct kvm_cap_arm_tmm_init_ipa_args {
+    pub init_ipa_base: __u64,
+    pub init_ipa_size: __u64,
+    pub reserved: [__u32; 4usize],
+}
+#[test]
+fn bindgen_test_layout_kvm_cap_arm_tmm_init_ipa_args() {
+    const UNINIT: ::std::mem::MaybeUninit<kvm_cap_arm_tmm_init_ipa_args> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<kvm_cap_arm_tmm_init_ipa_args>(),
+        32usize,
+        concat!("Size of: ", stringify!(kvm_cap_arm_tmm_init_ipa_args))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<kvm_cap_arm_tmm_init_ipa_args>(),
+        8usize,
+        concat!("Alignment of ", stringify!(kvm_cap_arm_tmm_init_ipa_args))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).init_ipa_base) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_init_ipa_args),
+            "::",
+            stringify!(init_ipa_base)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).init_ipa_size) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_init_ipa_args),
+            "::",
+            stringify!(init_ipa_size)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).reserved) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(kvm_cap_arm_tmm_init_ipa_args),
+            "::",
+            stringify!(reserved)
+        )
+    );
+}
 pub const kvm_smccc_filter_action_KVM_SMCCC_FILTER_HANDLE: kvm_smccc_filter_action = 0;
 pub const kvm_smccc_filter_action_KVM_SMCCC_FILTER_DENY: kvm_smccc_filter_action = 1;
 pub const kvm_smccc_filter_action_KVM_SMCCC_FILTER_FWD_TO_USER: kvm_smccc_filter_action = 2;
